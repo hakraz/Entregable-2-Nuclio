@@ -150,6 +150,18 @@ main { position: relative; z-index: 1; }
 .nl-signup input::placeholder { color: var(--fg-3); }
 .nl-fine { font-family: var(--font-mono); font-size: 11.5px; color: var(--fg-3); margin-top: 14px; letter-spacing: 0.03em; max-width: 480px; }
 
+.nl-form { display: flex; flex-direction: column; gap: 12px; max-width: 480px; }
+.nl-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.nl-input { background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; color: var(--fg); font-family: var(--font-body); font-size: 14px; outline: none; transition: border-color .15s; width: 100%; }
+.nl-input:focus { border-color: var(--accent-a); }
+.nl-input::placeholder { color: var(--fg-3); }
+.nl-topics-label { font-family: var(--font-mono); font-size: 11.5px; color: var(--fg-3); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 4px; }
+.nl-topics { display: flex; flex-wrap: wrap; gap: 8px; }
+.nl-topic { padding: 8px 14px; background: var(--bg-2); border: 1px solid var(--line); border-radius: 999px; color: var(--fg-2); font-family: var(--font-mono); font-size: 12px; font-weight: 500; cursor: pointer; transition: all .15s; }
+.nl-topic:hover { border-color: var(--fg-3); color: var(--fg); }
+.nl-topic.active { background: var(--accent-glow); border-color: var(--accent-a); color: var(--fg); }
+.nl-submit { width: 100%; justify-content: center; margin-top: 4px; }
+
 .nl-preview { position: relative; padding: 36px; background: linear-gradient(180deg, var(--bg-2), oklch(0.20 0.018 258)); border: 1px solid var(--line); border-radius: var(--radius-lg); box-shadow: 0 40px 100px -40px black; transform: rotate(0.8deg); }
 .nl-preview .tape { position: absolute; top: -10px; left: 40px; width: 120px; height: 22px; background: linear-gradient(90deg, var(--accent-a), var(--accent-b)); opacity: 0.8; box-shadow: 0 4px 14px var(--accent-glow); border-radius: 2px; }
 .np-head { display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 11px; color: var(--fg-3); letter-spacing: 0.08em; text-transform: uppercase; padding-bottom: 16px; border-bottom: 1px dashed var(--line); margin-bottom: 20px; }
@@ -193,7 +205,7 @@ main { position: relative; z-index: 1; }
 .final h2 { font-family: var(--font-display); font-weight: 500; font-size: clamp(36px, 5vw, 68px); letter-spacing: -0.03em; line-height: 0.98; max-width: 18ch; margin: 0 auto 20px; }
 .final h2 em { font-family: var(--font-serif); font-style: italic; color: var(--accent-a); }
 .final p.lead { margin: 0 auto 32px; text-align: center; }
-.final .nl-signup { margin: 0 auto; }
+.final .nl-signup, .final .nl-form { margin: 0 auto; }
 
 @media (max-width: 860px) {
   .nl-hero { grid-template-columns: 1fr; }
@@ -215,9 +227,20 @@ main { position: relative; z-index: 1; }
       </span>
       <h1>Microsoft news.<br><em>Every Tuesday.</em></h1>
       <p class="lead">A weekly dispatch on Microsoft 365, Azure, Power Platform and Copilot — written for people studying for the 900-series exams and the pros who already passed them. New subscribers get a course discount code within 24 hours.</p>
-      <form class="nl-signup" id="hero-form">
-        <input type="email" required placeholder="you@work.com" id="hero-email">
-        <button type="submit" class="btn btn-primary" style="padding:10px 18px" id="hero-btn">
+      <form class="nl-form" id="hero-form">
+        <div class="nl-form-row">
+          <input type="text" class="nl-input" placeholder="First name" aria-label="First name" id="hero-firstname" required>
+          <input type="text" class="nl-input" placeholder="Last name" aria-label="Last name" id="hero-lastname" required>
+        </div>
+        <input type="email" class="nl-input" placeholder="you@work.com" aria-label="Email" id="hero-email" required>
+        <span class="nl-topics-label">Topics you care about</span>
+        <div class="nl-topics" id="hero-topics">
+          <button type="button" class="nl-topic" data-topic="Azure">Azure</button>
+          <button type="button" class="nl-topic" data-topic="Microsoft 365">Microsoft 365</button>
+          <button type="button" class="nl-topic" data-topic="Power Platform">Power Platform</button>
+          <button type="button" class="nl-topic" data-topic="Copilot">Copilot</button>
+        </div>
+        <button type="submit" class="btn btn-primary nl-submit" id="hero-btn">
           Subscribe
           <svg class="arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </button>
@@ -428,18 +451,28 @@ function mountChrome(activeKey) {
 document.getElementById('ticker-slot').outerHTML = renderTicker();
 mountChrome('newsletter');
 
-function handleSubmit(inputId, btnId) {
-  var input = document.getElementById(inputId);
-  var btn = document.getElementById(btnId);
+function setupTopics(containerId) {
+  document.getElementById(containerId).addEventListener('click', function(e) {
+    var btn = e.target.closest('.nl-topic');
+    if (btn) btn.classList.toggle('active');
+  });
+}
+setupTopics('hero-topics');
+setupTopics('final-topics');
 
-  var email = input.value.trim();
+function handleSubmit(prefix) {
+  var firstname = document.getElementById(prefix + '-firstname').value.trim();
+  var lastname = document.getElementById(prefix + '-lastname').value.trim();
+  var emailInput = document.getElementById(prefix + '-email');
+  var email = emailInput.value.trim();
+  var topics = Array.from(document.querySelectorAll('#' + prefix + '-topics .nl-topic.active'))
+    .map(function(b) { return b.dataset.topic; });
+  var btn = document.getElementById(prefix + '-btn');
 
-  if (!email || !email.includes('@')) {
-    btn.textContent = '✕ Invalid email';
-    btn.style.color = 'var(--fg)';
-    setTimeout(() => {
+  if (!firstname || !lastname || !email || !email.includes('@')) {
+    btn.textContent = '✕ Complete all fields';
+    setTimeout(function() {
       btn.textContent = 'Subscribe';
-      btn.style.color = 'inherit';
     }, 2000);
     return;
   }
@@ -451,7 +484,10 @@ function handleSubmit(inputId, btnId) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
+      firstname: firstname,
+      lastname: lastname,
       email: email,
+      topics: topics,
       exam: 'M365news Newsletter',
       source: 'newsletter-page'
     })
@@ -460,28 +496,32 @@ function handleSubmit(inputId, btnId) {
     if (!response.ok) { throw new Error('Network error: ' + response.status); }
     btn.textContent = '✓ Subscribed';
     btn.style.background = 'var(--accent-a)';
-    input.value = '';
-    input.placeholder = 'Check your inbox for your discount code';
+    document.getElementById(prefix + '-firstname').value = '';
+    document.getElementById(prefix + '-lastname').value = '';
+    emailInput.value = '';
+    emailInput.placeholder = 'Check your inbox for your discount code';
+    document.querySelectorAll('#' + prefix + '-topics .nl-topic.active').forEach(function(b) {
+      b.classList.remove('active');
+    });
   })
   .catch(function(error) {
     console.error('Error:', error);
     btn.textContent = '✕ Error, retry';
     btn.disabled = false;
-    setTimeout(() => {
+    setTimeout(function() {
       btn.textContent = 'Subscribe';
-      btn.style.color = 'inherit';
     }, 3000);
   });
 }
 
 document.getElementById('hero-form').addEventListener('submit', function(e) {
   e.preventDefault();
-  handleSubmit('hero-email', 'hero-btn');
+  handleSubmit('hero');
 });
 
 document.getElementById('final-form').addEventListener('submit', function(e) {
   e.preventDefault();
-  handleSubmit('final-email', 'final-btn');
+  handleSubmit('final');
 });
 </script>
 </body>
