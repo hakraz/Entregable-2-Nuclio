@@ -1,0 +1,1116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>certxpro.net — Microsoft fundamentals, passed.</title>
+<meta name="description" content="Four focused Udemy courses for AZ-900, MS-900, PL-900 and AB-900. Subscribe to M365news and get a discount code for every course.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   certxpro.net — shared styles
+   ============================================================ */
+
+:root {
+  /* surfaces */
+  --bg:        oklch(0.18 0.018 258);
+  --bg-2:      oklch(0.22 0.020 258);
+  --bg-3:      oklch(0.26 0.022 258);
+  --line:      oklch(0.32 0.020 258);
+  --line-soft: oklch(0.26 0.018 258);
+
+  /* text */
+  --fg:        oklch(0.97 0.005 258);
+  --fg-2:      oklch(0.78 0.012 258);
+  --fg-3:      oklch(0.58 0.015 258);
+
+  /* accent — emerald */
+  --accent-a:  oklch(0.78 0.14 165);
+  --accent-b:  oklch(0.70 0.15 190);
+  --accent-glow: oklch(0.78 0.14 165 / 0.25);
+
+  --radius-sm: 6px;
+  --radius:    10px;
+  --radius-lg: 18px;
+
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-body:    "Space Grotesk", system-ui, sans-serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, monospace;
+  --font-serif:   "Instrument Serif", "Times New Roman", serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  min-height: 100vh;
+  background-image:
+    radial-gradient(ellipse 110% 50% at 50% -10%, oklch(0.30 0.08 260 / 0.4), transparent 55%),
+    linear-gradient(180deg, var(--bg) 0%, oklch(0.16 0.018 258) 100%);
+  background-attachment: fixed;
+}
+
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+
+::selection { background: var(--accent-a); color: var(--bg); }
+
+/* ---------- layout ---------- */
+.wrap {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.grid-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--line-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 0%, transparent 70%);
+  opacity: 0.35;
+  z-index: 0;
+}
+
+main { position: relative; z-index: 1; }
+
+/* ---------- nav ---------- */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  background: oklch(0.18 0.018 258 / 0.72);
+  border-bottom: 1px solid var(--line-soft);
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 16px 32px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+}
+.brand-mark {
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
+  background: linear-gradient(135deg, var(--accent-a), var(--accent-b));
+  position: relative;
+}
+.brand-mark::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: 2px;
+  background: var(--bg);
+}
+.brand-mark::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: 1px;
+  background: linear-gradient(135deg, var(--accent-a), var(--accent-b));
+  z-index: 1;
+}
+.brand b { color: var(--fg); }
+.brand span { color: var(--fg-3); }
+
+.nav-links {
+  display: flex;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+.nav-links a {
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  color: var(--fg-2);
+  transition: color .15s, background .15s;
+  position: relative;
+}
+.nav-links a:hover { color: var(--fg); background: var(--bg-2); }
+.nav-links a.active {
+  color: var(--fg);
+  background: var(--bg-2);
+}
+.nav-links a.active::after {
+  content: "";
+  position: absolute;
+  left: 14px; right: 14px; bottom: 3px;
+  height: 1.5px;
+  background: linear-gradient(90deg, var(--accent-a), var(--accent-b));
+}
+
+.nav-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 500;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--fg);
+  transition: all .15s;
+}
+.nav-cta:hover {
+  border-color: var(--accent-a);
+  background: var(--accent-glow);
+}
+
+/* ---------- buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 22px;
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  transition: transform .12s, box-shadow .2s, background .2s;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent-a), var(--accent-b));
+  color: oklch(0.12 0.02 258);
+  box-shadow: 0 8px 24px -8px var(--accent-glow);
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 12px 32px -8px var(--accent-glow); }
+.btn-ghost {
+  background: var(--bg-2);
+  border-color: var(--line);
+  color: var(--fg);
+}
+.btn-ghost:hover { background: var(--bg-3); border-color: var(--line); transform: translateY(-1px); }
+
+.btn .arrow { transition: transform .2s; }
+.btn:hover .arrow { transform: translateX(3px); }
+
+/* ---------- kickers & headlines ---------- */
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+.kicker::before {
+  content: "";
+  width: 18px;
+  height: 1px;
+  background: var(--fg-3);
+}
+.kicker.center::before, .kicker.center::after {
+  content: "";
+  width: 18px;
+  height: 1px;
+  background: var(--fg-3);
+}
+
+.h-display {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(44px, 6.2vw, 88px);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  color: var(--fg);
+}
+.h-serif-italic {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+.h-1 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(36px, 4.5vw, 60px);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+}
+.h-2 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(24px, 2.4vw, 34px);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+}
+.lead {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--fg-2);
+  max-width: 60ch;
+}
+.body-sm { font-size: 14px; color: var(--fg-2); line-height: 1.55; }
+.mono-label {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+.gradient-text {
+  background: linear-gradient(135deg, var(--accent-a), var(--accent-b));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---------- ticker ---------- */
+.ticker {
+  margin: 28px 0;
+  border-top: 1px solid var(--line-soft);
+  border-bottom: 1px solid var(--line-soft);
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--fg-2);
+  background: oklch(0.20 0.018 258 / 0.4);
+}
+.ticker-track {
+  display: flex;
+  gap: 60px;
+  padding: 14px 0;
+  white-space: nowrap;
+  animation: ticker 40s linear infinite;
+  width: max-content;
+}
+.ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+}
+.ticker-item .dot {
+  width: 4px; height: 4px; border-radius: 50%;
+  background: var(--accent-a);
+}
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ---------- cards ---------- */
+.card {
+  background: linear-gradient(180deg, var(--bg-2), oklch(0.20 0.018 258));
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  transition: border-color .2s, transform .2s;
+  position: relative;
+  overflow: hidden;
+}
+.card:hover { border-color: var(--line); }
+
+/* ---------- footer ---------- */
+.footer {
+  margin-top: 120px;
+  border-top: 1px solid var(--line-soft);
+  padding: 56px 0 40px;
+  position: relative;
+  z-index: 1;
+}
+.footer-inner {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1fr;
+  gap: 48px;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+.footer h4 {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  margin-bottom: 18px;
+}
+.footer ul { list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 14px; color: var(--fg-2); }
+.footer li a:hover { color: var(--fg); }
+.footer-bot {
+  max-width: 1240px;
+  margin: 40px auto 0;
+  padding: 24px 32px 0;
+  border-top: 1px solid var(--line-soft);
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--fg-3);
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 860px) {
+  .wrap { padding: 0 20px; }
+  .nav-inner { padding: 14px 20px; }
+  .nav-links { display: none; }
+  .footer-inner { grid-template-columns: 1fr 1fr; gap: 32px; }
+}
+
+/* ===== Hero ===== */
+.hero {
+  padding: clamp(60px, 10vw, 120px) 0 clamp(40px, 6vw, 80px);
+  position: relative;
+  overflow: hidden;
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 72px;
+  align-items: end;
+}
+.hero-kicker { margin-bottom: 28px; }
+.hero-title { margin-bottom: 28px; }
+.hero-title .line-2 { display: block; color: var(--fg-3); }
+.hero-title em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--accent-a), var(--accent-b));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.hero-title .serif {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+}
+.hero-lead { margin-bottom: 36px; max-width: 52ch; }
+.hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 40px; }
+
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  border-top: 1px solid var(--line-soft);
+  padding-top: 24px;
+  max-width: 560px;
+}
+.hero-stat .n {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+.hero-stat .l {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  margin-top: 4px;
+}
+
+/* hero card */
+.hero-card {
+  background: linear-gradient(180deg, var(--bg-2), oklch(0.20 0.018 258));
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 30px 80px -30px black;
+}
+.hero-card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(180deg, var(--accent-a), transparent 40%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  pointer-events: none;
+}
+.hc-head {
+  display: flex; align-items: center; justify-content: space-between;
+  font-family: var(--font-mono); font-size: 11px; color: var(--fg-3);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding-bottom: 14px; margin-bottom: 18px;
+  border-bottom: 1px dashed var(--line-soft);
+}
+.hc-dot {
+  display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent-a); margin-right: 8px;
+  box-shadow: 0 0 10px var(--accent-a);
+}
+.cert-big {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+.cert-big:last-child { border-bottom: none; }
+.cert-big .code {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+}
+.cert-big .code .dim { color: var(--fg-3); }
+.cert-big .name {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--fg-3);
+  margin-top: 4px;
+  letter-spacing: 0.03em;
+}
+.cert-big .price {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--fg-2);
+  text-align: right;
+}
+.cert-big .price s { color: var(--fg-3); margin-right: 8px; }
+.cert-big .price b { color: var(--accent-a); font-weight: 500; }
+.hc-foot {
+  margin-top: 14px; padding-top: 14px;
+  border-top: 1px dashed var(--line-soft);
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--font-mono); font-size: 11.5px; color: var(--fg-3);
+}
+.hc-foot a { color: var(--accent-a); }
+
+/* ===== Sections ===== */
+section { padding: clamp(60px, 8vw, 100px) 0; position: relative; }
+.section-head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 32px;
+  align-items: end;
+  padding-top: 16px;
+  margin-bottom: 48px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--line-soft);
+}
+.section-head .num {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--fg-3);
+  letter-spacing: 0.1em;
+}
+.section-head h2 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(28px, 3.6vw, 48px);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.section-head h2 em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--fg-3);
+}
+.section-head .link {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--fg-2);
+  letter-spacing: 0.04em;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-head .link:hover { color: var(--accent-a); }
+
+/* ===== Path ===== */
+.path {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--line-soft);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.step { background: var(--bg); padding: 36px 32px; position: relative; }
+.step .step-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent-a);
+  letter-spacing: 0.1em;
+  margin-bottom: 20px;
+  display: block;
+}
+.step h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: -0.01em;
+  margin-bottom: 10px;
+}
+.step p { font-size: 14.5px; color: var(--fg-2); line-height: 1.55; }
+.step .num-big {
+  position: absolute;
+  top: 28px; right: 32px;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 54px;
+  color: var(--line);
+  line-height: 1;
+}
+
+/* ===== Cert grid ===== */
+.cert-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.cert-card {
+  background: linear-gradient(180deg, var(--bg-2), oklch(0.20 0.018 258));
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  transition: border-color .2s, transform .2s;
+  position: relative;
+  overflow: hidden;
+  text-align: left;
+  display: block;
+}
+.cert-card:hover { border-color: var(--accent-a); transform: translateY(-2px); }
+.cert-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-a), transparent);
+  opacity: 0;
+  transition: opacity .2s;
+}
+.cert-card:hover::before { opacity: 1; }
+.cert-card .tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  margin-bottom: 28px;
+}
+.cert-card .code-xl {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 54px;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  margin-bottom: 6px;
+}
+.cert-card .code-xl .slash {
+  color: var(--fg-3);
+}
+.cert-card h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 17px;
+  letter-spacing: -0.01em;
+  margin-top: 22px;
+  margin-bottom: 8px;
+}
+.cert-card p {
+  font-size: 13.5px;
+  color: var(--fg-2);
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+.cert-card .meta {
+  display: flex;
+  gap: 16px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--fg-3);
+  letter-spacing: 0.05em;
+  padding-top: 16px;
+  border-top: 1px solid var(--line-soft);
+}
+.cert-card .go {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent-a);
+  margin-top: 16px;
+}
+
+/* ===== Pull quote ===== */
+.pull {
+  padding: clamp(60px, 9vw, 120px) 0;
+  text-align: center;
+}
+.pull blockquote {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(26px, 3.2vw, 44px);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  max-width: 20ch;
+  margin: 0 auto 32px;
+}
+.pull blockquote em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--accent-a);
+}
+.pull cite {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--fg-3);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-style: normal;
+}
+
+/* ===== CTA banner ===== */
+.cta-banner {
+  background: linear-gradient(135deg, oklch(0.22 0.03 258), oklch(0.18 0.018 258));
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: clamp(36px, 6vw, 72px);
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 48px;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+.cta-banner::before {
+  content: "";
+  position: absolute;
+  width: 500px; height: 500px;
+  right: -150px; top: -200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-glow), transparent 70%);
+  pointer-events: none;
+}
+.cta-banner h2 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(28px, 3.6vw, 44px);
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+  margin-bottom: 14px;
+  position: relative;
+}
+.cta-banner h2 em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: var(--accent-a);
+}
+.cta-banner p { color: var(--fg-2); max-width: 50ch; position: relative; }
+.cta-form { position: relative; display: flex; flex-direction: column; gap: 12px; }
+.cta-form-row {
+  display: flex;
+  gap: 8px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 6px;
+}
+.cta-form input {
+  flex: 1;
+  padding: 10px 14px;
+  background: transparent;
+  border: none;
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 14px;
+  outline: none;
+}
+.cta-form input::placeholder { color: var(--fg-3); }
+.cta-form .fineprint {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--fg-3);
+  letter-spacing: 0.03em;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 860px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+  .cert-grid { grid-template-columns: repeat(2, 1fr); }
+  .path { grid-template-columns: 1fr; }
+  .cta-banner { grid-template-columns: 1fr; }
+  .section-head { grid-template-columns: 1fr; gap: 12px; }
+}
+</style>
+</head>
+<body>
+
+<main>
+  <!-- Hero -->
+  <section class="hero wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="kicker hero-kicker">
+          <span class="hc-dot"></span> Microsoft fundamentals cert prep · 2026 edition
+        </div>
+        <h1 class="hero-title h-display">
+          Pass your <em>Microsoft</em><br>
+          <span class="serif">fundamentals</span> certification<br>
+          <span class="line-2">without the fluff.</span>
+        </h1>
+        <p class="hero-lead lead">
+          Four focused Udemy courses for AZ-900, MS-900, PL-900 and AB-900.
+          Subscribe to <strong style="color:var(--fg)">M365news</strong> and get a discount code for every course, straight to your inbox.
+        </p>
+        <div class="hero-ctas">
+          <a href="newsletter.html" class="btn btn-primary">
+            Get discount code
+            <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a href="courses.html" class="btn btn-ghost">Browse all courses</a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="n">4</div>
+            <div class="l">Fundamentals tracks</div>
+          </div>
+          <div class="hero-stat">
+            <div class="n">10k+</div>
+            <div class="l">Students enrolled</div>
+          </div>
+          <div class="hero-stat">
+            <div class="n">92%</div>
+            <div class="l">First-try pass rate</div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="hero-card">
+        <div class="hc-head">
+          <span><span class="hc-dot"></span>Subscriber pricing · live</span>
+          <span>M365news · wk 16</span>
+        </div>
+
+        <div class="cert-big">
+          <div>
+            <div class="code">AZ<span class="dim">-</span>900</div>
+            <div class="name">Azure Fundamentals</div>
+          </div>
+          <div class="price"><s>$84.99</s><b>$12.99</b></div>
+        </div>
+        <div class="cert-big">
+          <div>
+            <div class="code">MS<span class="dim">-</span>900</div>
+            <div class="name">Microsoft 365 Fundamentals</div>
+          </div>
+          <div class="price"><s>$84.99</s><b>$12.99</b></div>
+        </div>
+        <div class="cert-big">
+          <div>
+            <div class="code">PL<span class="dim">-</span>900</div>
+            <div class="name">Power Platform Fundamentals</div>
+          </div>
+          <div class="price"><s>$84.99</s><b>$12.99</b></div>
+        </div>
+        <div class="cert-big">
+          <div>
+            <div class="code">AB<span class="dim">-</span>900</div>
+            <div class="name">M365 Copilot &amp; Agent Fundamentals</div>
+          </div>
+          <div class="price"><s>$84.99</s><b>$12.99</b></div>
+        </div>
+
+        <div class="hc-foot">
+          <span>Subscribers save 85%</span>
+          <a href="newsletter.html">Unlock codes →</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<!-- Ticker (edge-to-edge) -->
+<div id="ticker-slot"></div>
+
+<main>
+  <!-- 01 / PATH -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="num">01 / PATH</span>
+      <h2>Three steps. <em>One exam passed.</em></h2>
+      <a href="courses.html" class="link">All courses →</a>
+    </div>
+    <div class="path">
+      <div class="step">
+        <span class="num-big">i</span>
+        <span class="step-num">STEP 01</span>
+        <h3>Subscribe to M365news</h3>
+        <p>Free weekly briefing on Microsoft 365, Azure, Power Platform and Copilot. You also get a dedicated discount code for each Udemy course.</p>
+      </div>
+      <div class="step">
+        <span class="num-big">ii</span>
+        <span class="step-num">STEP 02</span>
+        <h3>Pick your fundamentals track</h3>
+        <p>Choose the 900-series exam you need — AZ, MS, PL or AB. Each course is 6–9 hours of video plus practice exams, updated against the current exam blueprint.</p>
+      </div>
+      <div class="step">
+        <span class="num-big">iii</span>
+        <span class="step-num">STEP 03</span>
+        <h3>Pass the exam. Keep going.</h3>
+        <p>Finish the course, sit the Microsoft exam with confidence, then let the newsletter keep you current after you&rsquo;re certified.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 / COURSES -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="num">02 / COURSES</span>
+      <h2>Four fundamentals. <em>One blueprint.</em></h2>
+      <a href="courses.html" class="link">See details →</a>
+    </div>
+    <div class="cert-grid">
+      <a href="courses.html#az-900" class="cert-card">
+        <span class="tag">Exam · Foundational</span>
+        <div class="code-xl">AZ<span class="slash">-</span>900</div>
+        <h3>Azure Fundamentals</h3>
+        <p>Cloud concepts, core Azure services, security, pricing and governance. The best on-ramp to every other Azure cert.</p>
+        <div class="meta"><span>8h 40m</span><span>·</span><span>12 modules</span></div>
+        <span class="go">On Udemy <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+      <a href="courses.html#ms-900" class="cert-card">
+        <span class="tag">Exam · Foundational</span>
+        <div class="code-xl">MS<span class="slash">-</span>900</div>
+        <h3>Microsoft 365 Fundamentals</h3>
+        <p>Cloud productivity: Teams, SharePoint, Intune, Defender, Purview. The business-side counterpart to AZ-900.</p>
+        <div class="meta"><span>7h 20m</span><span>·</span><span>12 modules</span></div>
+        <span class="go">On Udemy <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+      <a href="courses.html#pl-900" class="cert-card">
+        <span class="tag">Exam · Foundational</span>
+        <div class="code-xl">PL<span class="slash">-</span>900</div>
+        <h3>Power Platform Fundamentals</h3>
+        <p>Power Apps, Power Automate, Power BI, Copilot Studio and Dataverse — low-code, fully covered.</p>
+        <div class="meta"><span>6h 10m</span><span>·</span><span>9 modules</span></div>
+        <span class="go">On Udemy <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+      <a href="courses.html#ab-900" class="cert-card">
+        <span class="tag">Exam · Foundational</span>
+        <div class="code-xl">AB<span class="slash">-</span>900</div>
+        <h3>M365 Copilot &amp; Agent Fundamentals</h3>
+        <p>The newest 900-series exam. Copilot adoption, agent basics, security &amp; governance for the agentic workplace.</p>
+        <div class="meta"><span>5h 45m</span><span>·</span><span>8 modules</span></div>
+        <span class="go">On Udemy <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Pull quote -->
+  <section class="pull wrap">
+    <span class="kicker center" style="display:inline-flex;margin-bottom:24px">Learner note</span>
+    <blockquote>
+      &ldquo;Passed <em>AZ-900</em> on first try after two weeks. The practice exams are the closest thing to the real one I&rsquo;ve seen.&rdquo;
+    </blockquote>
+    <cite>— R. Okafor · Cloud analyst, Dublin</cite>
+  </section>
+
+  <!-- CTA banner -->
+  <section class="wrap">
+    <div class="cta-banner">
+      <div>
+        <span class="kicker" style="margin-bottom:20px;display:inline-flex">M365news · Free weekly</span>
+        <h2>Want a <em>discount code</em> before you buy?</h2>
+        <p>Subscribe to M365news and we&rsquo;ll send you a subscriber-only coupon within 24 hours — usable on any of the four courses.</p>
+      </div>
+      <form class="cta-form" id="cta-form">
+        <div class="cta-form-row">
+          <input type="email" required placeholder="you@work.com" id="cta-email">
+          <button type="submit" class="btn btn-primary" style="padding:10px 18px" id="cta-btn">
+            Get code
+            <svg class="arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+        <div class="fineprint" id="cta-fine">Free forever · unsubscribe anytime · no spam · 4,200+ readers</div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<script>
+function renderNav(active) {
+  const links = [
+    { href: 'index.html', label: 'Home', id: 'home' },
+    { href: 'courses.html', label: 'Courses', id: 'courses' },
+    { href: 'newsletter.html', label: 'Newsletter', id: 'newsletter' },
+    { href: 'about.html', label: 'About', id: 'about' },
+  ];
+  return `
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="brand">
+        <span class="brand-mark"></span>
+        <b>certxpro</b><span>.net</span>
+      </a>
+      <div class="nav-links">
+        ${links.map(l => `<a href="${l.href}"${l.id === active ? ' class="active"' : ''}>${l.label}</a>`).join('')}
+      </div>
+      <a href="newsletter.html" class="nav-cta">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16v12H4z"/><path d="m4 6 8 7 8-7"/></svg>
+        Get discount
+      </a>
+    </div>
+  </nav>`;
+}
+
+function renderTicker() {
+  const items = [
+    'AB-900 · Microsoft 365 Copilot Fundamentals',
+    'PL-900 · Power Platform Fundamentals',
+    'MS-900 · Microsoft 365 Fundamentals',
+    'AZ-900 · Azure Fundamentals',
+    '10,000+ students enrolled',
+    'Weekly newsletter · M365news',
+  ];
+  const row = items.map(t => `<span class="ticker-item"><span class="dot"></span>${t}</span>`).join('');
+  return `<div class="ticker"><div class="ticker-track">${row}${row}</div></div>`;
+}
+
+function renderFooter() {
+  return `
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <a href="index.html" class="brand" style="margin-bottom:16px">
+          <span class="brand-mark"></span>
+          <b>certxpro</b><span>.net</span>
+        </a>
+        <p class="body-sm" style="max-width:36ch;margin-top:14px">
+          Microsoft fundamentals cert prep, taught by a working practitioner.
+          Hands-on courses, weekly briefings, and discount codes for subscribers.
+        </p>
+      </div>
+      <div>
+        <h4>Site</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="courses.html">Courses</a></li>
+          <li><a href="newsletter.html">Newsletter</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Courses</h4>
+        <ul>
+          <li><a href="courses.html#ms-900">MS-900</a></li>
+          <li><a href="courses.html#az-900">AZ-900</a></li>
+          <li><a href="courses.html#pl-900">PL-900</a></li>
+          <li><a href="courses.html#ab-900">AB-900</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">YouTube</a></li>
+          <li><a href="#">X / Twitter</a></li>
+          <li><a href="newsletter.html">Newsletter</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bot">
+      <span>© 2026 certxpro.net</span>
+      <span>Not affiliated with Microsoft Corporation</span>
+    </div>
+  </footer>`;
+}
+
+function mountChrome(activeKey) {
+  document.body.insertAdjacentHTML('afterbegin', '<div class="grid-bg"></div>' + renderNav(activeKey));
+  document.body.insertAdjacentHTML('beforeend', renderFooter());
+}
+</script>
+<script>
+document.getElementById('ticker-slot').outerHTML = renderTicker();
+mountChrome('home');
+
+document.getElementById('cta-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  var btn = document.getElementById('cta-btn');
+  var input = document.getElementById('cta-email');
+  var fine = document.getElementById('cta-fine');
+
+  var email = input.value.trim();
+
+  if (!email || !email.includes('@')) {
+    btn.textContent = '✕ Invalid email';
+    btn.style.color = 'var(--fg)';
+    setTimeout(() => {
+      btn.textContent = 'Get code';
+      btn.style.color = 'inherit';
+    }, 2000);
+    return;
+  }
+
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+
+  fetch('https://andrea-nuclio.app.n8n.cloud/webhook/649466da-d808-43cf-91c3-08a7edb25eb5', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      email: email,
+      exam: 'Deliverable 2 Signup',
+      source: 'home-cta'
+    })
+  })
+  .then(function(response) {
+    if (!response.ok) { throw new Error('Network error: ' + response.status); }
+    btn.textContent = '✓ Subscribed';
+    btn.style.background = 'var(--accent-a)';
+    input.value = '';
+    input.placeholder = 'Check your inbox for your discount code';
+    fine.textContent = '✓ Check your inbox for the discount code.';
+  })
+  .catch(function(error) {
+    console.error('Error:', error);
+    btn.textContent = '✕ Error, retry';
+    btn.disabled = false;
+    setTimeout(() => {
+      btn.textContent = 'Get code';
+      btn.style.color = 'inherit';
+    }, 3000);
+  });
+});
+</script>
+</body>
+</html>

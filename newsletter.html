@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>M365news — certxpro.net</title>
+<meta name="description" content="A weekly dispatch on Microsoft 365, Azure, Power Platform and Copilot. New subscribers get a course discount code within 24 hours.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   certxpro.net — shared styles
+   ============================================================ */
+
+:root {
+  --bg:        oklch(0.18 0.018 258);
+  --bg-2:      oklch(0.22 0.020 258);
+  --bg-3:      oklch(0.26 0.022 258);
+  --line:      oklch(0.32 0.020 258);
+  --line-soft: oklch(0.26 0.018 258);
+  --fg:        oklch(0.97 0.005 258);
+  --fg-2:      oklch(0.78 0.012 258);
+  --fg-3:      oklch(0.58 0.015 258);
+  --accent-a:  oklch(0.78 0.14 165);
+  --accent-b:  oklch(0.70 0.15 190);
+  --accent-glow: oklch(0.78 0.14 165 / 0.25);
+  --radius-sm: 6px;
+  --radius:    10px;
+  --radius-lg: 18px;
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-body:    "Space Grotesk", system-ui, sans-serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, monospace;
+  --font-serif:   "Instrument Serif", "Times New Roman", serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  min-height: 100vh;
+  background-image:
+    radial-gradient(ellipse 110% 50% at 50% -10%, oklch(0.30 0.08 260 / 0.4), transparent 55%),
+    linear-gradient(180deg, var(--bg) 0%, oklch(0.16 0.018 258) 100%);
+  background-attachment: fixed;
+}
+
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+::selection { background: var(--accent-a); color: var(--bg); }
+
+.wrap { max-width: 1240px; margin: 0 auto; padding: 0 32px; }
+
+.grid-bg {
+  position: fixed; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(var(--line-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 0%, transparent 70%);
+  opacity: 0.35; z-index: 0;
+}
+
+main { position: relative; z-index: 1; }
+
+.nav {
+  position: sticky; top: 0; z-index: 50;
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  background: oklch(0.18 0.018 258 / 0.72);
+  border-bottom: 1px solid var(--line-soft);
+}
+.nav-inner { display: flex; align-items: center; justify-content: space-between; max-width: 1240px; margin: 0 auto; padding: 16px 32px; }
+.brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-mono); font-weight: 600; font-size: 14px; letter-spacing: 0.02em; }
+.brand-mark { width: 22px; height: 22px; border-radius: 5px; background: linear-gradient(135deg, var(--accent-a), var(--accent-b)); position: relative; }
+.brand-mark::after { content: ""; position: absolute; inset: 4px; border-radius: 2px; background: var(--bg); }
+.brand-mark::before { content: ""; position: absolute; inset: 8px; border-radius: 1px; background: linear-gradient(135deg, var(--accent-a), var(--accent-b)); z-index: 1; }
+.brand b { color: var(--fg); }
+.brand span { color: var(--fg-3); }
+
+.nav-links { display: flex; gap: 4px; font-family: var(--font-mono); font-size: 13px; }
+.nav-links a { padding: 8px 14px; border-radius: var(--radius-sm); color: var(--fg-2); transition: color .15s, background .15s; position: relative; }
+.nav-links a:hover { color: var(--fg); background: var(--bg-2); }
+.nav-links a.active { color: var(--fg); background: var(--bg-2); }
+.nav-links a.active::after { content: ""; position: absolute; left: 14px; right: 14px; bottom: 3px; height: 1.5px; background: linear-gradient(90deg, var(--accent-a), var(--accent-b)); }
+
+.nav-cta { display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; font-family: var(--font-mono); font-size: 12.5px; font-weight: 500; border-radius: 999px; border: 1px solid var(--line); color: var(--fg); transition: all .15s; }
+.nav-cta:hover { border-color: var(--accent-a); background: var(--accent-glow); }
+
+.btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px; border-radius: var(--radius); font-family: var(--font-mono); font-size: 13px; font-weight: 500; letter-spacing: 0.01em; transition: transform .12s, box-shadow .2s, background .2s; cursor: pointer; border: 1px solid transparent; }
+.btn-primary { background: linear-gradient(135deg, var(--accent-a), var(--accent-b)); color: oklch(0.12 0.02 258); box-shadow: 0 8px 24px -8px var(--accent-glow); }
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 12px 32px -8px var(--accent-glow); }
+.btn-ghost { background: var(--bg-2); border-color: var(--line); color: var(--fg); }
+.btn-ghost:hover { background: var(--bg-3); border-color: var(--line); transform: translateY(-1px); }
+.btn .arrow { transition: transform .2s; }
+.btn:hover .arrow { transform: translateX(3px); }
+
+.kicker { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 11.5px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-3); }
+.kicker::before { content: ""; width: 18px; height: 1px; background: var(--fg-3); }
+.kicker.center::before, .kicker.center::after { content: ""; width: 18px; height: 1px; background: var(--fg-3); }
+
+.lead { font-size: 18px; line-height: 1.6; color: var(--fg-2); max-width: 60ch; }
+.body-sm { font-size: 14px; color: var(--fg-2); line-height: 1.55; }
+
+.ticker { margin: 28px 0; border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); overflow: hidden; font-family: var(--font-mono); font-size: 13px; color: var(--fg-2); background: oklch(0.20 0.018 258 / 0.4); }
+.ticker-track { display: flex; gap: 60px; padding: 14px 0; white-space: nowrap; animation: ticker 40s linear infinite; width: max-content; }
+.ticker-item { display: inline-flex; align-items: center; gap: 16px; }
+.ticker-item .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--accent-a); }
+@keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+.footer { margin-top: 120px; border-top: 1px solid var(--line-soft); padding: 56px 0 40px; position: relative; z-index: 1; }
+.footer-inner { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 48px; max-width: 1240px; margin: 0 auto; padding: 0 32px; }
+.footer h4 { font-family: var(--font-mono); font-size: 11.5px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-3); margin-bottom: 18px; }
+.footer ul { list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 14px; color: var(--fg-2); }
+.footer li a:hover { color: var(--fg); }
+.footer-bot { max-width: 1240px; margin: 40px auto 0; padding: 24px 32px 0; border-top: 1px solid var(--line-soft); display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 12px; color: var(--fg-3); }
+
+@media (max-width: 860px) {
+  .wrap { padding: 0 20px; }
+  .nav-inner { padding: 14px 20px; }
+  .nav-links { display: none; }
+  .footer-inner { grid-template-columns: 1fr 1fr; gap: 32px; }
+}
+
+/* ===== Newsletter page ===== */
+.section-head { display: grid; grid-template-columns: auto 1fr auto; gap: 32px; align-items: end; padding-top: 16px; margin-bottom: 48px; padding-bottom: 24px; border-bottom: 1px solid var(--line-soft); }
+.section-head .num { font-family: var(--font-mono); font-size: 12px; color: var(--fg-3); letter-spacing: 0.1em; }
+.section-head h2 { font-family: var(--font-display); font-weight: 500; font-size: clamp(28px, 3.6vw, 48px); letter-spacing: -0.02em; line-height: 1; }
+.section-head h2 em { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--fg-3); }
+.section-head .link { font-family: var(--font-mono); font-size: 12px; color: var(--fg-2); letter-spacing: 0.04em; display: inline-flex; align-items: center; gap: 8px; }
+.section-head .link:hover { color: var(--accent-a); }
+
+.nl-hero { padding: clamp(60px, 9vw, 120px) 0 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+.nl-hero .kicker { display: inline-flex; margin-bottom: 22px; }
+.nl-hero h1 { font-family: var(--font-display); font-weight: 500; font-size: clamp(44px, 6vw, 88px); line-height: 0.96; letter-spacing: -0.03em; margin-bottom: 28px; }
+.nl-hero h1 em { font-family: var(--font-serif); font-style: italic; font-weight: 400; background: linear-gradient(135deg, var(--accent-a), var(--accent-b)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.nl-hero p.lead { margin-bottom: 32px; }
+
+.nl-signup { background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 6px; display: flex; gap: 6px; max-width: 480px; }
+.nl-signup input { flex: 1; padding: 12px 14px; background: transparent; border: none; color: var(--fg); font-family: var(--font-body); font-size: 14px; outline: none; }
+.nl-signup input::placeholder { color: var(--fg-3); }
+.nl-fine { font-family: var(--font-mono); font-size: 11.5px; color: var(--fg-3); margin-top: 14px; letter-spacing: 0.03em; max-width: 480px; }
+
+.nl-preview { position: relative; padding: 36px; background: linear-gradient(180deg, var(--bg-2), oklch(0.20 0.018 258)); border: 1px solid var(--line); border-radius: var(--radius-lg); box-shadow: 0 40px 100px -40px black; transform: rotate(0.8deg); }
+.nl-preview .tape { position: absolute; top: -10px; left: 40px; width: 120px; height: 22px; background: linear-gradient(90deg, var(--accent-a), var(--accent-b)); opacity: 0.8; box-shadow: 0 4px 14px var(--accent-glow); border-radius: 2px; }
+.np-head { display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 11px; color: var(--fg-3); letter-spacing: 0.08em; text-transform: uppercase; padding-bottom: 16px; border-bottom: 1px dashed var(--line); margin-bottom: 20px; }
+.np-title { font-family: var(--font-display); font-weight: 500; font-size: 28px; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 18px; }
+.np-excerpt { font-size: 14px; color: var(--fg-2); line-height: 1.55; margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid var(--line-soft); }
+.np-section { display: flex; flex-direction: column; gap: 12px; font-size: 13.5px; color: var(--fg-2); }
+.np-section .row { display: grid; grid-template-columns: 40px 1fr; gap: 12px; padding: 8px 0; }
+.np-section .row .idx { font-family: var(--font-mono); color: var(--fg-3); font-size: 11px; padding-top: 2px; }
+.np-section .row b { color: var(--fg); font-weight: 500; }
+
+@keyframes coupon-glow {
+  0%, 100% { box-shadow: 0 0 0 0 transparent; border-color: var(--accent-a); }
+  50% { box-shadow: 0 0 20px 4px var(--accent-glow); border-color: oklch(0.88 0.14 165); }
+}
+@keyframes code-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.72; }
+}
+.np-coupon { margin-top: 22px; padding: 16px; background: var(--bg); border: 1px dashed var(--accent-a); border-radius: var(--radius-sm); display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 13px; animation: coupon-glow 2.8s ease-in-out infinite; }
+.np-coupon .code { color: var(--accent-a); font-weight: 500; letter-spacing: 0.08em; font-size: 15px; animation: code-pulse 2.8s ease-in-out infinite; }
+.np-coupon .lbl { color: var(--fg-3); font-size: 10.5px; letter-spacing: 0.08em; }
+
+.whatsin { padding: clamp(60px, 8vw, 100px) 0; }
+.whatsin-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line-soft); border: 1px solid var(--line-soft); border-radius: var(--radius-lg); overflow: hidden; }
+.wi-cell { background: var(--bg); padding: 40px 32px; display: flex; flex-direction: column; gap: 14px; min-height: 260px; }
+.wi-cell .num { font-family: var(--font-serif); font-style: italic; font-size: 40px; color: var(--accent-a); line-height: 1; }
+.wi-cell h3 { font-family: var(--font-display); font-weight: 500; font-size: 20px; letter-spacing: -0.01em; margin-top: auto; }
+.wi-cell p { font-size: 14px; color: var(--fg-2); line-height: 1.55; }
+
+.issues { padding-bottom: 40px; }
+.issues-list { display: flex; flex-direction: column; border-top: 1px solid var(--line-soft); }
+.issue-row { display: grid; grid-template-columns: 120px 60px 1fr auto; gap: 32px; padding: 24px 0; border-bottom: 1px solid var(--line-soft); align-items: center; transition: background .2s; color: inherit; text-decoration: none; }
+.issue-row:hover { background: oklch(0.21 0.018 258 / 0.5); }
+.issue-row:hover .ir-title { color: var(--accent-a); }
+.ir-date { font-family: var(--font-mono); font-size: 11.5px; color: var(--fg-3); letter-spacing: 0.05em; }
+.ir-num { font-family: var(--font-mono); font-size: 13px; color: var(--fg-2); }
+.ir-title { font-family: var(--font-display); font-weight: 500; font-size: 18px; letter-spacing: -0.01em; transition: color .2s; }
+.ir-topics { font-family: var(--font-mono); font-size: 11px; color: var(--fg-3); letter-spacing: 0.05em; justify-self: end; }
+
+.final { padding: clamp(60px, 9vw, 120px) 0; text-align: center; }
+.final h2 { font-family: var(--font-display); font-weight: 500; font-size: clamp(36px, 5vw, 68px); letter-spacing: -0.03em; line-height: 0.98; max-width: 18ch; margin: 0 auto 20px; }
+.final h2 em { font-family: var(--font-serif); font-style: italic; color: var(--accent-a); }
+.final p.lead { margin: 0 auto 32px; text-align: center; }
+.final .nl-signup { margin: 0 auto; }
+
+@media (max-width: 860px) {
+  .nl-hero { grid-template-columns: 1fr; }
+  .whatsin-grid { grid-template-columns: 1fr; }
+  .issue-row { grid-template-columns: 1fr; gap: 4px; }
+  .ir-topics { justify-self: start; }
+  .section-head { grid-template-columns: 1fr; gap: 12px; }
+}
+</style>
+</head>
+<body>
+
+<main>
+  <section class="nl-hero wrap">
+    <div>
+      <span class="kicker" style="gap:8px">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--accent-a);flex-shrink:0"></span>
+        M365news · free weekly
+      </span>
+      <h1>Microsoft news.<br><em>Every Tuesday.</em></h1>
+      <p class="lead">A weekly dispatch on Microsoft 365, Azure, Power Platform and Copilot — written for people studying for the 900-series exams and the pros who already passed them. New subscribers get a course discount code within 24 hours.</p>
+      <form class="nl-signup" id="hero-form">
+        <input type="email" required placeholder="you@work.com" id="hero-email">
+        <button type="submit" class="btn btn-primary" style="padding:10px 18px" id="hero-btn">
+          Subscribe
+          <svg class="arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </form>
+      <p class="nl-fine">✓ Free forever &nbsp;·&nbsp; ✓ 4,200+ readers &nbsp;·&nbsp; ✓ Discount code on signup &nbsp;·&nbsp; ✓ Unsubscribe anytime</p>
+    </div>
+
+    <aside class="nl-preview">
+      <div class="tape"></div>
+      <div class="np-head">
+        <span>Issue 047</span>
+        <span>Tue · 14 Apr 2026</span>
+      </div>
+      <h2 class="np-title">What AB-900 actually covers — and what it doesn&rsquo;t</h2>
+      <p class="np-excerpt">Microsoft&rsquo;s newest fundamentals exam landed this quarter. Here&rsquo;s the scope you need to know, the three topics the blueprint is sneaky about, and the study order I recommend…</p>
+      <div class="np-section">
+        <div class="row"><span class="idx">01</span><span><b>This week in M365.</b> Copilot agents go GA for E3 tenants. What changes for admins.</span></div>
+        <div class="row"><span class="idx">02</span><span><b>Azure digest.</b> New regions, new VM SKUs, and one deprecation you shouldn&rsquo;t miss.</span></div>
+        <div class="row"><span class="idx">03</span><span><b>Study drill.</b> Five practice questions from the AZ-900 bank — answers at the bottom.</span></div>
+      </div>
+      <div class="np-coupon">
+        <div>
+          <div class="lbl">YOUR CODE · 30% OFF</div>
+          <div class="code">M365-APRIL-30</div>
+        </div>
+        <span class="lbl">Exp. 30 Apr</span>
+      </div>
+    </aside>
+  </section>
+</main>
+
+<div id="ticker-slot"></div>
+
+<main>
+  <section class="whatsin wrap">
+    <div class="section-head">
+      <span class="num">WHAT&rsquo;S IN IT</span>
+      <h2>Three things, every Tuesday.</h2>
+      <span class="link" style="pointer-events:none">~5 min read</span>
+    </div>
+    <div class="whatsin-grid">
+      <div class="wi-cell">
+        <span class="num">i.</span>
+        <p>The week distilled. One tight summary of what happened in Microsoft cloud — only what matters to cert-prep students and working pros.</p>
+        <h3>The Weekly</h3>
+      </div>
+      <div class="wi-cell">
+        <span class="num">ii.</span>
+        <p>Five practice questions drawn directly from one of the four 900-level exam banks. Clear explanations, no guessing.</p>
+        <h3>The Drill</h3>
+      </div>
+      <div class="wi-cell">
+        <span class="num">iii.</span>
+        <p>A fresh subscriber-only code. Works on any course, stackable with Udemy sales, usable until end of the month.</p>
+        <h3>The Code</h3>
+      </div>
+    </div>
+  </section>
+
+  <section class="issues wrap">
+    <div class="section-head">
+      <span class="num">RECENT ISSUES</span>
+      <h2><em>What readers got</em> lately.</h2>
+      <a href="#" class="link">Full archive →</a>
+    </div>
+    <div class="issues-list">
+      <a href="#" class="issue-row">
+        <span class="ir-date">14 Apr 2026</span>
+        <span class="ir-num">#047</span>
+        <span class="ir-title">What AB-900 actually covers — and what it doesn&rsquo;t</span>
+        <span class="ir-topics">AB-900 · COPILOT</span>
+      </a>
+      <a href="#" class="issue-row">
+        <span class="ir-date">07 Apr 2026</span>
+        <span class="ir-num">#046</span>
+        <span class="ir-title">Your 14-day AZ-900 study plan, rebuilt from scratch</span>
+        <span class="ir-topics">AZ-900 · STUDY</span>
+      </a>
+      <a href="#" class="issue-row">
+        <span class="ir-date">31 Mar 2026</span>
+        <span class="ir-num">#045</span>
+        <span class="ir-title">Purview for MS-900: the three things most guides skip</span>
+        <span class="ir-topics">MS-900 · PURVIEW</span>
+      </a>
+      <a href="#" class="issue-row">
+        <span class="ir-date">24 Mar 2026</span>
+        <span class="ir-num">#044</span>
+        <span class="ir-title">Copilot Studio, in 900 words or fewer</span>
+        <span class="ir-topics">PL-900 · COPILOT STUDIO</span>
+      </a>
+      <a href="#" class="issue-row">
+        <span class="ir-date">17 Mar 2026</span>
+        <span class="ir-num">#043</span>
+        <span class="ir-title">Every Azure service type, mapped to real-world use</span>
+        <span class="ir-topics">AZ-900 · SERVICES</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="final wrap">
+    <span class="kicker center" style="display:inline-flex;margin-bottom:22px">Subscribe</span>
+    <h2>Get the next issue &mdash; <em>and your discount code</em> &mdash; on Tuesday.</h2>
+    <p class="lead">No spam, no filler, no upsell funnel. Unsubscribe with one click.</p>
+    <form class="nl-signup" id="final-form">
+      <input type="email" required placeholder="you@work.com" id="final-email">
+      <button type="submit" class="btn btn-primary" style="padding:10px 18px" id="final-btn">
+        Subscribe
+        <svg class="arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+    </form>
+  </section>
+</main>
+
+<script>
+function renderNav(active) {
+  const links = [
+    { href: 'index.html', label: 'Home', id: 'home' },
+    { href: 'courses.html', label: 'Courses', id: 'courses' },
+    { href: 'newsletter.html', label: 'Newsletter', id: 'newsletter' },
+    { href: 'about.html', label: 'About', id: 'about' },
+  ];
+  return `
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="brand">
+        <span class="brand-mark"></span>
+        <b>certxpro</b><span>.net</span>
+      </a>
+      <div class="nav-links">
+        ${links.map(l => `<a href="${l.href}"${l.id === active ? ' class="active"' : ''}>${l.label}</a>`).join('')}
+      </div>
+      <a href="newsletter.html" class="nav-cta">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16v12H4z"/><path d="m4 6 8 7 8-7"/></svg>
+        Get discount
+      </a>
+    </div>
+  </nav>`;
+}
+
+function renderTicker() {
+  const items = [
+    'AB-900 · Microsoft 365 Copilot Fundamentals',
+    'PL-900 · Power Platform Fundamentals',
+    'MS-900 · Microsoft 365 Fundamentals',
+    'AZ-900 · Azure Fundamentals',
+    '10,000+ students enrolled',
+    'Weekly newsletter · M365news',
+  ];
+  const row = items.map(t => `<span class="ticker-item"><span class="dot"></span>${t}</span>`).join('');
+  return `<div class="ticker"><div class="ticker-track">${row}${row}</div></div>`;
+}
+
+function renderFooter() {
+  return `
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <a href="index.html" class="brand" style="margin-bottom:16px">
+          <span class="brand-mark"></span>
+          <b>certxpro</b><span>.net</span>
+        </a>
+        <p class="body-sm" style="max-width:36ch;margin-top:14px">
+          Microsoft fundamentals cert prep, taught by a working practitioner.
+          Hands-on courses, weekly briefings, and discount codes for subscribers.
+        </p>
+      </div>
+      <div>
+        <h4>Site</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="courses.html">Courses</a></li>
+          <li><a href="newsletter.html">Newsletter</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Courses</h4>
+        <ul>
+          <li><a href="courses.html#ms-900">MS-900</a></li>
+          <li><a href="courses.html#az-900">AZ-900</a></li>
+          <li><a href="courses.html#pl-900">PL-900</a></li>
+          <li><a href="courses.html#ab-900">AB-900</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">YouTube</a></li>
+          <li><a href="#">X / Twitter</a></li>
+          <li><a href="newsletter.html">Newsletter</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bot">
+      <span>© 2026 certxpro.net</span>
+      <span>Not affiliated with Microsoft Corporation</span>
+    </div>
+  </footer>`;
+}
+
+function mountChrome(activeKey) {
+  document.body.insertAdjacentHTML('afterbegin', '<div class="grid-bg"></div>' + renderNav(activeKey));
+  document.body.insertAdjacentHTML('beforeend', renderFooter());
+}
+</script>
+<script>
+document.getElementById('ticker-slot').outerHTML = renderTicker();
+mountChrome('newsletter');
+
+function handleSubmit(inputId, btnId) {
+  var input = document.getElementById(inputId);
+  var btn = document.getElementById(btnId);
+
+  var email = input.value.trim();
+
+  if (!email || !email.includes('@')) {
+    btn.textContent = '✕ Invalid email';
+    btn.style.color = 'var(--fg)';
+    setTimeout(() => {
+      btn.textContent = 'Subscribe';
+      btn.style.color = 'inherit';
+    }, 2000);
+    return;
+  }
+
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+
+  fetch('https://n8n.eu8.es/webhook/31b2ea6b-85ef-4f01-8de9-5b6d48000195', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      email: email,
+      exam: 'M365news Newsletter',
+      source: 'newsletter-page'
+    })
+  })
+  .then(function(response) {
+    if (!response.ok) { throw new Error('Network error: ' + response.status); }
+    btn.textContent = '✓ Subscribed';
+    btn.style.background = 'var(--accent-a)';
+    input.value = '';
+    input.placeholder = 'Check your inbox for your discount code';
+  })
+  .catch(function(error) {
+    console.error('Error:', error);
+    btn.textContent = '✕ Error, retry';
+    btn.disabled = false;
+    setTimeout(() => {
+      btn.textContent = 'Subscribe';
+      btn.style.color = 'inherit';
+    }, 3000);
+  });
+}
+
+document.getElementById('hero-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  handleSubmit('hero-email', 'hero-btn');
+});
+
+document.getElementById('final-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  handleSubmit('final-email', 'final-btn');
+});
+</script>
+</body>
+</html>
