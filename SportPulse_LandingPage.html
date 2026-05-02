@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SportPulse — Contenido deportivo personalizado con IA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --neon: #00FF87;
+      --neon-dim: #00cc6a;
+      --bg-primary: #0a0a0f;
+      --bg-card: #12121a;
+      --bg-card-hover: #1a1a28;
+      --text-primary: #ffffff;
+      --text-secondary: #8a8a9a;
+      --text-muted: #555566;
+      --border: #222233;
+      --gradient-1: linear-gradient(135deg, #00FF87 0%, #00b894 100%);
+      --gradient-hero: linear-gradient(180deg, rgba(0,255,135,0.08) 0%, transparent 60%);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+    }
+
+    .logo span { color: var(--neon); }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--neon); }
+
+    .nav-cta {
+      padding: 0.6rem 1.4rem;
+      background: var(--neon);
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.3s;
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(0,255,135,0.3);
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 8rem 2rem 4rem;
+      position: relative;
+      background: var(--gradient-hero);
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(0,255,135,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(0,255,135,0.08);
+      border: 1px solid rgba(0,255,135,0.2);
+      border-radius: 100px;
+      font-size: 0.8rem;
+      color: var(--neon);
+      margin-bottom: 2rem;
+      font-weight: 600;
+      animation: fadeInDown 0.8s ease;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      font-weight: 900;
+      line-height: 1.05;
+      max-width: 800px;
+      letter-spacing: -0.03em;
+      animation: fadeInUp 0.8s ease 0.2s both;
+    }
+
+    .hero h1 .highlight {
+      background: var(--gradient-1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      max-width: 550px;
+      margin: 1.5rem auto 2.5rem;
+      line-height: 1.6;
+      animation: fadeInUp 0.8s ease 0.4s both;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 1rem 2.2rem;
+      background: var(--neon);
+      color: #000;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 1.05rem;
+      transition: all 0.3s;
+      animation: fadeInUp 0.8s ease 0.6s both;
+    }
+
+    .hero-cta:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(0,255,135,0.35);
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
+      margin-top: 4rem;
+      animation: fadeInUp 0.8s ease 0.8s both;
+    }
+
+    .stat { text-align: center; }
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--neon);
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.2rem;
+    }
+
+    /* SECTIONS */
+    section {
+      padding: 6rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-title h2 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .section-title p {
+      color: var(--text-secondary);
+      margin-top: 0.8rem;
+      font-size: 1.1rem;
+    }
+
+    /* HOW IT WORKS */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .step {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      transition: all 0.4s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .step:hover {
+      border-color: rgba(0,255,135,0.3);
+      transform: translateY(-4px);
+      background: var(--bg-card-hover);
+    }
+
+    .step-number {
+      width: 50px;
+      height: 50px;
+      border-radius: 14px;
+      background: rgba(0,255,135,0.1);
+      color: var(--neon);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      font-weight: 900;
+      margin: 0 auto 1.5rem;
+    }
+
+    .step h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+    }
+
+    .step p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    /* SPORTS GRID */
+    .sports-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1.5rem;
+    }
+
+    .sport-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.4s;
+    }
+
+    .sport-card:hover {
+      border-color: var(--neon);
+      transform: translateY(-6px);
+      box-shadow: 0 12px 40px rgba(0,255,135,0.1);
+    }
+
+    .sport-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .sport-card h4 {
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .sport-card p {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 0.4rem;
+    }
+
+    /* FORM SECTION */
+    .form-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 4rem;
+      max-width: 650px;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .form-section::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--gradient-1);
+    }
+
+    .form-section h2 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-section > p {
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text-primary);
+      font-size: 1rem;
+      font-family: 'Outfit', sans-serif;
+      transition: border-color 0.3s;
+      outline: none;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: var(--neon);
+    }
+
+    .form-group select option {
+      background: var(--bg-primary);
+    }
+
+    .form-submit {
+      width: 100%;
+      padding: 1rem;
+      background: var(--neon);
+      color: #000;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 800;
+      font-family: 'Outfit', sans-serif;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 0.5rem;
+    }
+
+    .form-submit:hover {
+      box-shadow: 0 6px 25px rgba(0,255,135,0.35);
+      transform: translateY(-2px);
+    }
+
+    .form-note {
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 1rem;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    footer .logo {
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+
+    footer p {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin: 1rem 0;
+    }
+
+    .social-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.3s;
+    }
+
+    .social-links a:hover { color: var(--neon); }
+
+    /* ANIMATIONS */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .steps { grid-template-columns: 1fr; }
+      .sports-grid { grid-template-columns: repeat(2, 1fr); }
+      .form-section { padding: 2rem 1.5rem; }
+      .hero-stats { gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    }
+
+    @media (max-width: 480px) {
+      .sports-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo">Sport<span>Pulse</span></div>
+    <ul class="nav-links">
+      <li><a href="#como-funciona">Cómo funciona</a></li>
+      <li><a href="#deportes">Deportes</a></li>
+      <li><a href="#formulario">Suscribirse</a></li>
+    </ul>
+    <a href="#formulario" class="nav-cta">Obtener mi artículo →</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">⚡ Potenciado por Inteligencia Artificial</div>
+    <h1>Noticias deportivas <span class="highlight">hechas para ti</span></h1>
+    <p>Elige tu deporte favorito y recibe un artículo profesional generado por IA con las últimas noticias reales. Personalizado. Instantáneo. Gratis.</p>
+    <a href="#formulario" class="hero-cta">🏆 Recibir mi artículo gratis</a>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-number">5</div>
+        <div class="stat-label">Deportes</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">24/7</div>
+        <div class="stat-label">Noticias en vivo</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">IA</div>
+        <div class="stat-label">Personalización</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="como-funciona">
+    <div class="section-title reveal">
+      <h2>Cómo funciona</h2>
+      <p>Tres pasos. Un artículo profesional en tu bandeja de entrada.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-number">1</div>
+        <h3>Elige tu deporte</h3>
+        <p>Selecciona entre Fútbol, F1, NBA, Tenis o MMA. Nuestro sistema personaliza el contenido según tu interés.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-number">2</div>
+        <h3>La IA investiga</h3>
+        <p>Nuestro agente de IA analiza las últimas noticias de fuentes como BBC Sport y ESPN en tiempo real.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-number">3</div>
+        <h3>Recibe tu artículo</h3>
+        <p>En minutos recibes un artículo profesional en tu email con un enlace a Google Docs. Listo para leer.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPORTS -->
+  <section id="deportes">
+    <div class="section-title reveal">
+      <h2>Deportes disponibles</h2>
+      <p>Contenido especializado para cada disciplina</p>
+    </div>
+    <div class="sports-grid">
+      <div class="sport-card reveal">
+        <span class="sport-icon">⚽</span>
+        <h4>Fútbol</h4>
+        <p>La Liga, Premier, Champions</p>
+      </div>
+      <div class="sport-card reveal">
+        <span class="sport-icon">🏎️</span>
+        <h4>Fórmula 1</h4>
+        <p>Carreras, pilotos, equipos</p>
+      </div>
+      <div class="sport-card reveal">
+        <span class="sport-icon">🏀</span>
+        <h4>NBA</h4>
+        <p>Partidos, estrellas, playoffs</p>
+      </div>
+      <div class="sport-card reveal">
+        <span class="sport-icon">🎾</span>
+        <h4>Tenis</h4>
+        <p>Grand Slams, rankings ATP</p>
+      </div>
+      <div class="sport-card reveal">
+        <span class="sport-icon">🥊</span>
+        <h4>MMA / UFC</h4>
+        <p>Peleas, rankings, eventos</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORM -->
+  <section id="formulario" style="padding-bottom: 6rem;">
+    <div class="form-section reveal">
+      <h2>Recibe tu artículo 🚀</h2>
+      <p>Rellena el formulario y en minutos tendrás tu contenido personalizado.</p>
+      <form id="sportpulse-form" onsubmit="handleSubmit(event)">
+        <div class="form-group">
+          <label for="nombre">Nombre</label>
+          <input type="text" id="nombre" placeholder="Tu nombre" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="tu@email.com" required>
+        </div>
+        <div class="form-group">
+          <label for="deporte">Deporte favorito</label>
+          <select id="deporte" required>
+            <option value="" disabled selected>Selecciona un deporte</option>
+            <option value="Fútbol">⚽ Fútbol</option>
+            <option value="Fórmula 1">🏎️ Fórmula 1</option>
+            <option value="NBA / Baloncesto">🏀 NBA / Baloncesto</option>
+            <option value="Tenis">🎾 Tenis</option>
+            <option value="MMA / UFC">🥊 MMA / UFC</option>
+          </select>
+        </div>
+        <button type="submit" class="form-submit">Generar mi artículo →</button>
+      </form>
+      <p class="form-note">🔒 Sin spam. Solo tu artículo personalizado.</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="logo">Sport<span>Pulse</span></div>
+    <div class="social-links">
+      <a href="#">Twitter/X</a>
+      <a href="#">Instagram</a>
+      <a href="#">LinkedIn</a>
+    </div>
+    <p>© 2026 SportPulse — Contenido deportivo generado con IA</p>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Form handler
+    function handleSubmit(e) {
+      e.preventDefault();
+      const form = e.target;
+      const btn = form.querySelector('.form-submit');
+      btn.textContent = 'Enviando...';
+      btn.disabled = true;
+
+      const payload = {
+        nombre: form.querySelector('#nombre').value,
+        email: form.querySelector('#email').value,
+        deporte: form.querySelector('#deporte').value,
+        source: 'sportpulse-form'
+      };
+
+      fetch('https://n8n.eu8.es/form/604379c4-e7fb-4010-a86c-30ca31f5978b', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+        .then(() => {
+          btn.textContent = '✅ ¡Enviado! Revisa tu email';
+          btn.style.background = '#00cc6a';
+          setTimeout(() => {
+            btn.textContent = 'Generar mi artículo →';
+            btn.style.background = '';
+            btn.disabled = false;
+            form.reset();
+          }, 3000);
+        })
+        .catch(() => {
+          btn.textContent = '❌ Error — inténtalo de nuevo';
+          btn.style.background = '#ff4444';
+          setTimeout(() => {
+            btn.textContent = 'Generar mi artículo →';
+            btn.style.background = '';
+            btn.disabled = false;
+          }, 3000);
+        });
+    }
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -2,86 +2,68 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Project
+## Project overview
 
-Static multi-page marketing site for **certxpro.net** — Microsoft 900-series certification prep courses (AB-900, AZ-900, MS-900, PL-900) with newsletter (M365news) as primary conversion path. No build step; plain HTML. All CSS and JS are inlined inside each HTML file.
+SportPulse is a lead magnet automation project: a single-page HTML landing page that captures visitor data and feeds it into an N8N workflow that generates personalized AI sports articles and delivers them via email.
 
 ## Local development
 
+No build step — all HTML/CSS/JS is inline in a single file. To preview locally:
+
 ```bash
-python3 -m http.server 8000
-# then open http://localhost:8000
+python -m http.server 8000
+# then open http://localhost:8000/SportPulse_LandingPage.html
 ```
 
-Opening via `file://` works too; Python server avoids CORS quirks.
+To test the N8N webhook manually:
+
+```bash
+curl -X POST <WEBHOOK_URL> \
+  -H "Content-Type: application/json" \
+  -d '{"nombre":"Test","email":"test@example.com","deporte":"Fútbol","source":"sportpulse-form"}'
+```
 
 ## Architecture
 
-Each page is a **self-contained HTML file** — no external CSS or JS files. Every page carries:
+### Frontend (`SportPulse_LandingPage.html`)
 
-1. `<style>` block in `<head>` — shared design tokens + page-specific styles
-2. First `<script>` block before `</body>` — shared chrome functions (`renderNav`, `renderTicker`, `renderFooter`, `mountChrome`)
-3. Second `<script>` block — page-specific logic (ticker init, form handlers, filter chips)
+Single self-contained file (HTML + inline `<style>` + inline `<script>`). The form at `#sportpulse-form` (line 571) currently has only visual feedback — the real N8N `fetch()` POST needs to be wired in `handleSubmit()` (line 621).
 
-| Page | Role |
-|---|---|
-| [index.html](index.html) | Home — hero, ticker, path/steps, course grid, pull quote, CTA form → N8N |
-| [courses.html](courses.html) | Course catalog (AB-900 first, newest→oldest), filter chips, bundle offer |
-| [newsletter.html](newsletter.html) | M365news signup with envelope preview, dual forms → N8N |
-| [about.html](about.html) | Portrait placeholder, bio, principles, FAQ accordion, contact band |
-
-### Chrome injection
-
-`mountChrome(activeKey)` inserts `.grid-bg` + `<nav>` at `afterbegin` and `<footer>` at `beforeend`. Valid `activeKey` values: `'home'`, `'courses'`, `'newsletter'`, `'about'`.
-
-**The chrome functions (`renderNav`, `renderTicker`, `renderFooter`, `mountChrome`) are duplicated verbatim in all four HTML files.** Editing nav links, footer copy, or ticker items requires the same change in each file.
-
-Each page must contain `<div id="ticker-slot"></div>` at the desired ticker position. Page JS replaces it:
-```js
-document.getElementById('ticker-slot').outerHTML = renderTicker();
-```
-`renderTicker()` duplicates the items array for CSS infinite-scroll.
-
-### Webhook integration
-
-Form handlers POST the following JSON:
-
+Form payload shape:
 ```json
-{ "email": "user@example.com", "exam": "...", "source": "..." }
+{
+  "nombre": "string",
+  "email": "string",
+  "deporte": "Fútbol | Fórmula 1 | NBA / Baloncesto | Tenis | MMA / UFC",
+  "source": "sportpulse-form"
+}
 ```
 
-| Page | Webhook URL | `exam` | `source` |
-|---|---|---|---|
-| `index.html` | `https://andrea-nuclio.app.n8n.cloud/webhook/649466da-d808-43cf-91c3-08a7edb25eb5` | `"Deliverable 2 Signup"` | `"home-cta"` |
-| `newsletter.html` | `https://n8n.eu8.es/webhook/31b2ea6b-85ef-4f01-8de9-5b6d48000195` | `"M365news Newsletter"` | `"newsletter-page"` |
+### N8N workflow (5 nodes, external)
 
-UI states: idle → `"Sending..."` (disabled) → `"✓ Subscribed"` or `"✕ Error, retry"` (re-enabled).
+```
+Webhook trigger → Google Sheets (append lead) → AI model (generate article)
+    → Google Docs (create doc) → Gmail (send link) + Slack (notify team)
+```
 
-## Design tokens
+Each node is worth 2 points in the rubric. Credentials (Google, Gmail, Slack, AI provider) live in the N8N cloud instance — never in the repo.
 
-All tokens live in the `:root` block inside each page's `<style>`. Accent is **emerald** (`--accent-a: oklch(0.78 0.14 165)` / `--accent-b: oklch(0.70 0.15 190)`). Gradients always `linear-gradient(135deg, var(--accent-a), var(--accent-b))`. Single responsive breakpoint at **860px**. Default content max-width **1240px** (`.wrap`).
+## Design system
 
-Typography: Space Grotesk (display/body) + JetBrains Mono (labels/metadata) + Instrument Serif italic (editorial accents via `<em>`).
+CSS custom properties are defined at the top of `<style>` (`:root` block, line 9):
 
-Body background glow: `radial-gradient(ellipse 110% 50% at 50% -10%, oklch(0.30 0.08 260 / 0.4), transparent 55%)`. Ellipse width must stay ≥ 110% — narrower widths make the fade edge align with content column edges.
+| Token | Value | Use |
+|---|---|---|
+| `--neon` | `#00FF87` | Primary accent, CTAs |
+| `--bg-primary` | `#0a0a0f` | Page background |
+| `--bg-card` | `#12121a` | Card backgrounds |
+| `--text-secondary` | `#8a8a9a` | Subtitles, captions |
+
+Responsive breakpoints: 768px (grid collapses) and 480px (padding/font adjustments). Scroll animations use `IntersectionObserver` — add the `reveal` class to any element that should fade in on scroll.
 
 ## Key conventions
 
-- All CSS and JS live **inline** inside each HTML file — no external files, no `assets/` folder.
-- When editing styles or scripts, find them in the relevant HTML file's `<style>` or `<script>` block.
-- Brand name is always **certxpro.net** (with domain) — never bare `certxpro` in headings or body copy.
-- Cert names use a hyphen: `AZ-900`, not `AZ/900`. The `.slash` span carries `color: var(--fg-3)` for the dim hyphen.
-- Courses catalog uses `.courses-wide` (max-width 1440px) instead of `.wrap` (1240px).
-- Filter chips and course rows in `courses.html` are paired via `data-category` (`azure` / `m365` / `power` / `copilot`).
-- Course order: newest to oldest — AB-900 (Apr 2026), AZ-900 (Mar 2026), MS-900 (Feb 2026), PL-900 (Jan 2026).
-- Udemy links are placeholder `https://udemy.com` — replace before deploying.
-- Footer must keep "Not affiliated with Microsoft Corporation."
-
-## Reference docs (project root)
-
-| File | Purpose |
-|---|---|
-| `N8N_WORKFLOW_SPEC_EN.md` | Full N8N workflow spec: 5-node pipeline (Webhook → Sheets → AI → Docs → Gmail + Slack), variable mapping, curl test commands |
-| `WEB_UPDATES_MINIMAL_EN.md` | Exact JS code for the two form handlers + integration checklist. **Note:** the doc refers to `assets/js/index.js` / `assets/js/newsletter.js` which don't exist — apply those changes to the inline `<script>` blocks in `index.html` and `newsletter.html` respectively. |
-| `PLAN_DELIVERABLE2_M3_MINIMAL.md` | Project overview and delivery scope |
-| `docs/` | Module 3 course PDFs (funnels, content AI, automation, QA) — reference material only, not deployed |
+- All content is in Spanish (es).
+- The file is intentionally self-contained — do not extract CSS/JS into separate files.
+- The `docs/` folder contains course reference PDFs; do not modify them.
+- Remote: `https://github.com/hakraz/Entregable-2-Nuclio.git` (branch: `main`).
