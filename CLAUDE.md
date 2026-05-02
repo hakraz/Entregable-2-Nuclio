@@ -18,7 +18,7 @@ python -m http.server 8000
 To test the N8N webhook manually:
 
 ```bash
-curl -X POST <WEBHOOK_URL> \
+curl -X POST https://n8n.eu8.es/form/16275f83-fc13-4bf9-9ae3-be4b447c09f4 \
   -H "Content-Type: application/json" \
   -d '{"nombre":"Test","email":"test@example.com","deporte":"Fútbol","source":"sportpulse-form"}'
 ```
@@ -27,7 +27,7 @@ curl -X POST <WEBHOOK_URL> \
 
 ### Frontend (`SportPulse_LandingPage.html`)
 
-Single self-contained file (HTML + inline `<style>` + inline `<script>`). The form at `#sportpulse-form` (line 571) currently has only visual feedback — the real N8N `fetch()` POST needs to be wired in `handleSubmit()` (line 621).
+Single self-contained file (HTML + inline `<style>` + inline `<script>`). The form at `#sportpulse-form` (line 571) submits via `handleSubmit()` (line 621), which POSTs JSON to the N8N webhook and shows inline button feedback (sending → success/error → reset).
 
 Form payload shape:
 ```json
