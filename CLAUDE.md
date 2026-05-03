@@ -20,7 +20,7 @@ To test the N8N webhook manually:
 ```bash
 curl -X POST https://n8n.eu8.es/webhook/d0333ef1-14f3-417f-961f-8ada6bd10943 \
   -H "Content-Type: application/json" \
-  -d '{"nombre":"Test","email":"test@example.com","deporte":"Fútbol","source":"sportpulse-form"}'
+  -d '{"Nombre":"Test","Email":"test@example.com","Deporte":"Fútbol"}'
 ```
 
 ## Architecture
@@ -32,10 +32,9 @@ Single self-contained file (HTML + inline `<style>` + inline `<script>`). The fo
 Form payload shape:
 ```json
 {
-  "nombre": "string",
-  "email": "string",
-  "deporte": "Fútbol | Fórmula 1 | NBA / Baloncesto | Tenis | MMA / UFC",
-  "source": "sportpulse-form"
+  "Nombre": "string",
+  "Email": "string",
+  "Deporte": "Fútbol | Fórmula 1 | NBA / Baloncesto | Tenis | MMA / UFC"
 }
 ```
 
