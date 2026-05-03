@@ -622,30 +622,29 @@
       e.preventDefault();
       const form = e.target;
       const btn = form.querySelector('.form-submit');
-      btn.textContent = 'Enviando...';
+      btn.textContent = '⏳ Generando tu artículo...';
       btn.disabled = true;
 
       const payload = {
-        nombre: form.querySelector('#nombre').value,
-        email: form.querySelector('#email').value,
-        deporte: form.querySelector('#deporte').value,
-        source: 'sportpulse-form'
+        Nombre: form.querySelector('#nombre').value,
+        Email: form.querySelector('#email').value,
+        Deporte: form.querySelector('#deporte').value
       };
 
-      fetch('https://n8n.eu8.es/form/16275f83-fc13-4bf9-9ae3-be4b447c09f4', {
+      fetch('https://n8n.eu8.es/webhook/d0333ef1-14f3-417f-961f-8ada6bd10943', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       })
         .then(() => {
-          btn.textContent = '✅ ¡Enviado! Revisa tu email';
+          btn.textContent = '✅ ¡Enviado! Revisa tu email en unos minutos';
           btn.style.background = '#00cc6a';
           setTimeout(() => {
             btn.textContent = 'Generar mi artículo →';
             btn.style.background = '';
             btn.disabled = false;
             form.reset();
-          }, 3000);
+          }, 5000);
         })
         .catch(() => {
           btn.textContent = '❌ Error — inténtalo de nuevo';

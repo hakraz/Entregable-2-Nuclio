@@ -18,7 +18,7 @@ python -m http.server 8000
 To test the N8N webhook manually:
 
 ```bash
-curl -X POST https://n8n.eu8.es/form/16275f83-fc13-4bf9-9ae3-be4b447c09f4 \
+curl -X POST https://n8n.eu8.es/webhook/d0333ef1-14f3-417f-961f-8ada6bd10943 \
   -H "Content-Type: application/json" \
   -d '{"nombre":"Test","email":"test@example.com","deporte":"Fútbol","source":"sportpulse-form"}'
 ```
